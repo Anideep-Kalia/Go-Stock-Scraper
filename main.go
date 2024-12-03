@@ -26,7 +26,9 @@ func setupCallbacks(c *colly.Collector, stocks *[]Stock) {
 	c.OnError(func(r* colly.Response,err error){
 		log.Println("Error occurred:", err)
 	})
-	c.OnHTML("div#quote-header-info", func(e *colly.HTMLElement) {
+	c.OnHTML("div.container", func(e *colly.HTMLElement) {
+		println("working??")
+		println(e.ChildText("h1"),e.ChildText("fin-streamer[data-field='regularMarketPrice']"),e.ChildText("fin-streamer[data-field='regularMarketChangePercent']"))
 		stock := Stock{
 			company: e.ChildText("h1"),
 			price:   e.ChildText("fin-streamer[data-field='regularMarketPrice']"),
