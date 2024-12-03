@@ -138,6 +138,22 @@ c := colly.NewCollector()
 ### Rate Limiting:
 Prevent getting banned by setting rate limits for requests.
 ```go
-c.Wait()
+c := colly.NewCollector(
+		colly.Limit(&colly.LimitRule{
+			DomainGlob:  "*example.com*",
+			Delay:       2 * time.Second,
+			RandomDelay: 1 * time.Second,
+		}),
+	)
+
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println("Visiting:", r.URL)
+	})
+
+	c.OnHTML("h1", func(e *colly.HTMLElement) {
+		fmt.Println("Heading found:", e.Text)
+	})
+
+	c.Visit("https://example.com")
 ```
 
