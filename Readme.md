@@ -30,6 +30,7 @@ c.OnRequest(func(r *colly.Request) {
 })
 ```
 
+
 ### OnError:
 Triggered when an error occurs during a request.
 Example:
@@ -39,6 +40,7 @@ c.OnError(func(r *colly.Response, err error) {
 })
 ```
 
+
 ### OnHTML:
 Triggered when a specified HTML element is found in the response.
 ```go
@@ -47,11 +49,36 @@ c.OnHTML("div.container", func(e *colly.HTMLElement) {
 })
 ```
 
+
 ### Wait:
 Waits for all pending asynchronous tasks to complete before moving forward.
 ```go
 c.Wait()
 ```
+
+
+### Post:
+This makes an HTTP POST request to submit the login form.
+```go
+e.Request.Post(e.Request.URL.String(), map[string]string{
+		"username": "your_username",
+		"password": "your_password",
+	})
+```
+
+
+### Limit:
+function used to set rate-limiting rules for the collector. It defines how the collector should behave when sending requests to a server to avoid overloading the server or getting blocked.
+```go
+c := colly.NewCollector(
+    colly.Limit(&colly.LimitRule{
+        DomainGlob:  "*example.com*",
+        Delay:       2 * time.Second,       // delay between each request
+        RandomDelay: 1 * time.Second,       // adds a random delay before each request, helps make the scraping behavior less predictable  
+    }),
+)
+```
+
 
 ### Scrape Links:
 Extract all links (`<a>` tags) from a webpage.moving forward.
@@ -62,6 +89,7 @@ c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 	})
 ```
 
+
 ### Scrape Images:
 Collect all image URLs from a webpage.
 ```go
@@ -70,6 +98,7 @@ c.OnHTML("img[src]", func(e *colly.HTMLElement) {
 		fmt.Println("Image found:", imageURL)
 	})
 ```
+
 
 ### Handle AJAX Content:
 Use colly.Async for scraping websites with dynamic content loaded via JavaScript.
@@ -90,6 +119,7 @@ c := colly.NewCollector(
 	c.Wait() // Wait for all asynchronous requests to finish
 ```
 
+
 ###  Login and Scrape Protected Pages:
 Handle login forms and scrape data from pages that require authentication.
 ```go
@@ -97,7 +127,8 @@ c := colly.NewCollector()
 
 	// Handle login form submission
 	c.OnHTML("form", func(e *colly.HTMLElement) {
-		e.Request.Post(e.Request.URL.String(), map[string]string{
+        // URL of the current page,  map where we specify the login form fields (username and password).
+		e.Request.Post(e.Request.URL.String(), map[string]string{  
 			"username": "your_username",
 			"password": "your_password",
 		})
@@ -115,6 +146,7 @@ c := colly.NewCollector()
 	// Visit the login page
 	c.Visit("https://example.com/login")
 ```
+
 
 ### Set Custom Headers:
 Send requests with custom headers, such as a User-Agent or cookies.
