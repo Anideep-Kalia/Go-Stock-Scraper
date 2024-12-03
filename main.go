@@ -6,41 +6,44 @@ import (
 	"log"
 	"os"
 
-	"github.com/gocolly/colly"
+	"github.com/gocolly/colly" // package for webscraping
 )
 
 type Stock struct{
 company, price, change string
 }
 
+var ticker = []string{
+	"MSFT",
+	"IBM",
+	"GE",
+	"UNP",
+	"COST",
+	"MCD",
+	"V",
+	"WMT",
+	"DIS",
+	"MMM",
+	"INTC",
+	"AXP",
+	"AAPL",
+	"BA",
+	"CSCO",
+	"GS",
+	"JPM",
+	"CRM",
+	"VZ",
+
+}
+
 func main(){
-	ticker := []string{
-		"MSFT",
-		"IBM",
-		"GE",
-		"UNP",
-		"COST",
-		"MCD",
-		"V",
-		"WMT",
-		"DIS",
-		"MMM",
-		"INTC",
-  		"AXP",
-    	"AAPL",
-    	"BA",
-    	"CSCO",
-    	"GS",
-    	"JPM",
-    	"CRM",
-    	"VZ",
-   
-	}
 
 	stocks := []Stock{}
 
+	// interface for webscraping
 	c := colly.NewCollector()
 
+	// colly specific functions
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting:", r.URL)
 	})
