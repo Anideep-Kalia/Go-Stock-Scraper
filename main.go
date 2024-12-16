@@ -75,6 +75,7 @@ func main() {
 	c.Wait() // Ensure all scraping tasks are completed
 
 	// Save the results to a CSV file
+	println(stocks)
 	saveToCSV(stocks)
 }
 
